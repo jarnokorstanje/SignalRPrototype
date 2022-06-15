@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace SignalRPrototype.Controllers
 {
@@ -6,7 +7,14 @@ namespace SignalRPrototype.Controllers
     [Route("[controller]")]
     public class MessageController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        private readonly IHubContext<MessageHub> _hubContext;
+
+        public MessageController(IHubContext<MessageHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
+
+        private static readonly string[] ExampleTexts = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
@@ -14,18 +22,20 @@ namespace SignalRPrototype.Controllers
         [HttpGet(Name = "GetMessage")]
         public Message Get()
         {
-            return new Message
-            {
-                Body = Summaries[Random.Shared.Next(Summaries.Length)]
-            };
+            return new Message(
+                    ExampleTexts[Random.Shared.Next(ExampleTexts.Length)],
+                    "User 1",
+                    "User 2"
+                );
         }
 
         [HttpPost(Name = "PostMessage")]
-        public string Post(Message message)
+        public async Task<IActionResult> Post(Message message)
         {
-            // Invoke SignalR stuff here
+            // Invoke SignalR client method
+            await _hubContext.Clients.All.SendAsync("MessageReceived", message);
 
-            return $"Sending message: {message.Body}";
+            return Ok(message);
         }
     }
 }

@@ -27,8 +27,9 @@ public class MessageHub : Hub
     
     public void MessageResponse(Guid guid)
     {
+        Console.WriteLine();
         Console.WriteLine("Response message received by server: " + guid);
 
-        // TODO: search and delete message with corresponding GUID
+        DataAccess.DeleteMessage(guid);
     }
 }

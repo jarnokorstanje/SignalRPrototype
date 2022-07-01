@@ -27,6 +27,8 @@ namespace SignalRPrototype.Controllers
         [HttpPost(Name = "MessageUser")]
         public async Task<IActionResult> MessageUser(Message message)
         {
+            DataAccess.SaveMessage(message);
+
             await _hubContext.Clients.Group($"user_{message.receiver}").SendAsync("message", message);
 
             return Ok(message);

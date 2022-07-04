@@ -5,6 +5,7 @@ namespace SignalRPrototype
 {
     public class DataAccess
     {
+        // todo: public ienumerable = new list
         public static Dictionary<Guid, Message> messages = new Dictionary<Guid, Message>();
         
         public static void SaveMessage(Message message)
@@ -16,8 +17,7 @@ namespace SignalRPrototype
 
             foreach (KeyValuePair<Guid, Message> kvp in messages)
             {
-                Console.WriteLine("Key = {0}, Value = {1}",
-                   kvp.Key, kvp.Value.text);
+                Console.WriteLine($"{kvp.Key}: '{kvp.Value.text}' Receiver: {kvp.Value.receiver}");
             }
         }
 
@@ -36,15 +36,29 @@ namespace SignalRPrototype
 
             foreach (KeyValuePair<Guid, Message> kvp in messages)
             {
-                Console.WriteLine("Key = {0}, Value = {1}",
-                   kvp.Key, kvp.Value.text);
+                Console.WriteLine($"{kvp.Key}: '{kvp.Value.text}' Receiver: {kvp.Value.receiver}");
             }
         }
 
         public static Message[] GetMessagesByReceiver(string receiver)
         {
-            return messages.Where(message => message.Value.receiver == receiver)
+            var missedMessages = messages.Where(message => message.Value.receiver == receiver)
                 .Select(message => message.Value).ToArray();
+
+            foreach (var message in missedMessages)
+            {
+                messages.Remove(message.guid);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine($"Deleting missed messages for user");
+            
+            foreach (KeyValuePair<Guid, Message> kvp in messages)
+            {
+                Console.WriteLine($"{kvp.Key}: '{kvp.Value.text}' Receiver: {kvp.Value.receiver}");
+            }
+
+            return missedMessages;
         }
     }
 }

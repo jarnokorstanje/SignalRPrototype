@@ -14,22 +14,13 @@ namespace SignalRPrototype.Controllers
             _hubContext = hubContext;
         }
 
-        [Route("MessageAll")]
-        [HttpPost(Name = "MessageAll")]
-        public async Task<IActionResult> MessageAll(Message message)
-        {
-            await _hubContext.Clients.All.SendAsync("message", message);
-
-            return Ok(message);
-        }
-
         [Route("MessageUser")]
         [HttpPost(Name = "MessageUser")]
         public async Task<IActionResult> MessageUser(Message message)
         {
             DataAccess.SaveMessage(message);
 
-            await _hubContext.Clients.Group($"user_{message.receiver}").SendAsync("message", message);
+            await _hubContext.Clients.Group(message.receiver).SendAsync("message", message);
 
             return Ok(message);
         }

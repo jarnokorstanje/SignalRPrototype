@@ -2,28 +2,24 @@
 
 namespace SignalRPrototype;
 
-//TODO: refactor to strongly typed hub
 public class MessageHub : Hub
 {
     public async Task MessageAll(Message message)
         => await Clients.All.SendAsync("message", message);
 
-    public Task MessageUser(string groupName, Message message)
+    public Task MessageUser(Message message)
     {
-        return Clients.Group(groupName).SendAsync("message", message);
+        return Clients.Group(message.receiver).SendAsync("message", message);
     }
 
     public async Task<Task> AddToGroup(string username)
     {
-        var groupName = "user_" + username;
+        await Groups.AddToGroupAsync(Context.ConnectionId, username);
 
-        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        var missedMessages = DataAccess.GetMessagesByReceiver(username);
 
-        var message = new Message($"{Context.ConnectionId} has joined the group {groupName}.", "MessageHub", groupName);
-
-        return Clients.Group(groupName).SendAsync("message", message);
+        return Clients.Group(username).SendAsync("missedMessages", missedMessages);
     }
-
     
     public void MessageResponse(Guid guid)
     {

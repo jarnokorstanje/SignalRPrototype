@@ -5,19 +5,18 @@ namespace SignalRPrototype
 {
     public class DataAccess
     {
-        // todo: public ienumerable = new list
-        public static Dictionary<Guid, Message> messages = new Dictionary<Guid, Message>();
+        public static List<Message> messageList = new List<Message>();
         
-        public static void SaveMessage(Message message)
+        public static void SaveMessage(Message messageToSave)
         {
-            messages.Add(message.guid, message);
+            messageList.Add(messageToSave);
 
             Console.WriteLine();
-            Console.WriteLine($"Saving message: {message.guid}, {message.text}");
+            Console.WriteLine($"Saving message: {messageToSave.guid}, {messageToSave.text}");
 
-            foreach (KeyValuePair<Guid, Message> kvp in messages)
+            foreach (var message in messageList)
             {
-                Console.WriteLine($"{kvp.Key}: '{kvp.Value.text}' Receiver: {kvp.Value.receiver}");
+                Console.WriteLine($"{message.guid}: '{message.text}' Receiver: {message.receiver}");
             }
         }
 
@@ -26,36 +25,29 @@ namespace SignalRPrototype
             Console.WriteLine();
             Console.WriteLine($"Deleting message: {guid}");
 
-            if (!messages.ContainsKey(guid))
-            {
-                Console.WriteLine($"Key {guid} is not found.");
-            } else
-            {
-                messages.Remove(guid);
-            }
+            messageList.Remove(messageList.First(m => m.guid == guid));
 
-            foreach (KeyValuePair<Guid, Message> kvp in messages)
+            foreach (var message in messageList)
             {
-                Console.WriteLine($"{kvp.Key}: '{kvp.Value.text}' Receiver: {kvp.Value.receiver}");
+                Console.WriteLine($"{message.guid}: '{message.text}' Receiver: {message.receiver}");
             }
         }
 
         public static Message[] GetMessagesByReceiver(string receiver)
         {
-            var missedMessages = messages.Where(message => message.Value.receiver == receiver)
-                .Select(message => message.Value).ToArray();
+            var missedMessages = messageList.Where(message => message.receiver == receiver).ToArray();
 
             foreach (var message in missedMessages)
             {
-                messages.Remove(message.guid);
+                messageList.Remove(messageList.First(m => m.guid == message.guid));
             }
 
             Console.WriteLine();
             Console.WriteLine($"Deleting missed messages for user");
-            
-            foreach (KeyValuePair<Guid, Message> kvp in messages)
+
+            foreach (var message in messageList)
             {
-                Console.WriteLine($"{kvp.Key}: '{kvp.Value.text}' Receiver: {kvp.Value.receiver}");
+                Console.WriteLine($"{message.guid}: '{message.text}' Receiver: {message.receiver}");
             }
 
             return missedMessages;

@@ -4,21 +4,13 @@ namespace SignalRPrototype;
 
 public class MessageHub : Hub
 {
-    public async Task MessageAll(Message message)
-        => await Clients.All.SendAsync("message", message);
-
-    public Task MessageUser(Message message)
+    public void AddToGroup(string username)
     {
-        return Clients.Group(message.receiver).SendAsync("message", message);
-    }
+        Groups.AddToGroupAsync(Context.ConnectionId, username);
 
-    public async Task<Task> AddToGroup(string username)
-    {
-        await Groups.AddToGroupAsync(Context.ConnectionId, username);
+        var missedMessages = MessageStorage.GetMessagesByReceiver(username); //TODO: nadenken over of deze ook een ontvangst bevestiging moeten sturen.
 
-        var missedMessages = DataAccess.GetMessagesByReceiver(username);
-
-        return Clients.Group(username).SendAsync("missedMessages", missedMessages);
+        Clients.Group(username).SendAsync("missedMessages", missedMessages);
     }
     
     public void MessageResponse(Guid guid)
@@ -26,6 +18,6 @@ public class MessageHub : Hub
         Console.WriteLine();
         Console.WriteLine("Response message received by server: " + guid);
 
-        DataAccess.DeleteMessage(guid);
+        MessageStorage.DeleteMessage(guid);
     }
 }

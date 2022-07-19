@@ -1,22 +1,19 @@
-﻿using System.Linq;
-
-namespace SignalRPrototype
-
+﻿namespace SignalRPrototype
 {
-    public class DataAccess
+    public static class MessageStorage //TODO betere naam, misschie nmessages
     {
-        public static List<Message> messageList = new List<Message>();
+        public static List<Message> messageList = new List<Message>(); // private maken, je wil neit dat  iederene er bij kan, MissedMessageList van maken
         
-        public static void SaveMessage(Message messageToSave)
+        public static void SaveMessage(Message messageToSave, ITextWriter textWriter)
         {
             messageList.Add(messageToSave);
 
-            Console.WriteLine();
-            Console.WriteLine($"Saving message: {messageToSave.guid}, {messageToSave.text}");
+            textWriter.WriteLine();
+            textWriter.WriteLine($"Saving message: {messageToSave.guid}, {messageToSave.text}");
 
-            foreach (var message in messageList)
+            foreach (var message in messageList) // todo explicit types ipv var
             {
-                Console.WriteLine($"{message.guid}: '{message.text}' Receiver: {message.receiver}");
+                textWriter.WriteLine($"{message.guid}: '{message.text}' Receiver: {message.receiver}");
             }
         }
 
@@ -37,7 +34,7 @@ namespace SignalRPrototype
         {
             var missedMessages = messageList.Where(message => message.receiver == receiver).ToArray();
 
-            foreach (var message in missedMessages)
+            foreach (var message in missedMessages) //todo extract to ne public function (single responsibility)
             {
                 messageList.Remove(messageList.First(m => m.guid == message.guid));
             }
@@ -45,7 +42,7 @@ namespace SignalRPrototype
             Console.WriteLine();
             Console.WriteLine($"Deleting missed messages for user");
 
-            foreach (var message in messageList)
+            foreach (var message in messageList)  //TODO: duplicate code, misschien message.print en in deze classe messages.printAll ofzoiets
             {
                 Console.WriteLine($"{message.guid}: '{message.text}' Receiver: {message.receiver}");
             }

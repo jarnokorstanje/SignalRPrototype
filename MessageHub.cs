@@ -8,18 +8,18 @@ public class MessageHub : Hub
     {
         Groups.AddToGroupAsync(Context.ConnectionId, username);
 
-        var missedMessages = MessageStorage.GetMessagesByReceiver(username); //TODO: nadenken over of deze ook een ontvangst bevestiging moeten sturen.
+        var missedMessages = MissedMessages.GetMessagesByReceiver(username);
 
         Clients.Group(username).SendAsync("missedMessages", missedMessages);
     }
     
     public void MessageResponse(Guid guid)
     {
-        MessageStorage.DeleteMessage(guid, new ConsoleTextWriter());
+        MissedMessages.DeleteMessage(guid, new ConsoleTextWriter());
     }
 
     public void MissedMessagesResponse(Guid[] guidArray)
     {
-        MessageStorage.DeleteMultipleMessages(guidArray, new ConsoleTextWriter());
+        MissedMessages.DeleteMultipleMessages(guidArray, new ConsoleTextWriter());
     }
 }

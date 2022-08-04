@@ -1,12 +1,12 @@
 ﻿namespace SignalRPrototype
 {
-    public static class MessageStorage //TODO betere naam, misschie nmessages
+    public static class MissedMessages
     {
-        public static List<Message> messageList = new(); // private maken, je wil neit dat  iederene er bij kan, MissedMessageList van maken
+        public static List<Message> missedMessageList = new(); // private maken: hoe te voorkomen dat de test omvalt???
         
         public static void SaveMessage(Message messageToSave, ITextWriter textWriter)
         {
-            messageList.Add(messageToSave);
+            missedMessageList.Add(messageToSave);
 
             textWriter.WriteLine();
             textWriter.WriteLine($"Saving message: {messageToSave.guid}, {messageToSave.text}");
@@ -17,7 +17,7 @@
             textWriter.WriteLine();
             textWriter.WriteLine($"Deleting message: {guid}");
 
-            messageList.Remove(messageList.First(m => m.guid == guid));
+            missedMessageList.Remove(missedMessageList.First(m => m.guid == guid));
         }
 
         public static void DeleteMultipleMessages(Guid[] guidArray, ITextWriter textWriter)
@@ -26,13 +26,13 @@
             {
                 textWriter.WriteLine();
                 textWriter.WriteLine($"Deleting missed message: {guid}");
-                messageList.Remove(messageList.First(m => m.guid == guid));
+                missedMessageList.Remove(missedMessageList.First(m => m.guid == guid));
             }
         }
 
         public static Message[] GetMessagesByReceiver(string receiver)
         {
-            var missedMessages = messageList.Where(message => message.receiver == receiver).ToArray();
+            var missedMessages = missedMessageList.Where(message => message.receiver == receiver).ToArray();
 
             return missedMessages;
         }

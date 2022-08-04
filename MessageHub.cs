@@ -15,9 +15,11 @@ public class MessageHub : Hub
     
     public void MessageResponse(Guid guid)
     {
-        Console.WriteLine();
-        Console.WriteLine("Response message received by server: " + guid);
+        MessageStorage.DeleteMessage(guid, new ConsoleTextWriter());
+    }
 
-        MessageStorage.DeleteMessage(guid);
+    public void MissedMessagesResponse(Guid[] guidArray)
+    {
+        MessageStorage.DeleteMultipleMessages(guidArray, new ConsoleTextWriter());
     }
 }

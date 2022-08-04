@@ -14,8 +14,7 @@ namespace SignalRPrototype.Controllers
             _hubContext = hubContext;
         }
 
-        [Route("MessageUser")]
-        [HttpPost(Name = "MessageUser")]
+        [HttpPost("MessageUser")]
         public async Task<IActionResult> MessageUser(Message message)
         {
             MissedMessages.SaveMessage(message, new ConsoleTextWriter());

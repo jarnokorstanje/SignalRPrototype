@@ -24,11 +24,12 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(swagger =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    swagger.SwaggerEndpoint("/swagger/v1/swagger.json", "SignalRPrototype API v1");
+    swagger.RoutePrefix = string.Empty;
+});
 
 app.UseHttpsRedirection();
 

@@ -12,15 +12,15 @@
             textWriter.WriteLine($"Saving message: {messageToSave.guid}, {messageToSave.text}");
         }
 
-        public static void DeleteMessage(Guid guid, ITextWriter textWriter)
-        {
-            textWriter.WriteLine();
-            textWriter.WriteLine($"Deleting message: {guid}");
+        //public static void DeleteMessage(Guid guid, ITextWriter textWriter)
+        //{
+        //    textWriter.WriteLine();
+        //    textWriter.WriteLine($"Deleting message: {guid}");
 
-            missedMessageList.Remove(missedMessageList.First(m => m.guid == guid));
-        }
+        //    missedMessageList.Remove(missedMessageList.First(m => m.guid == guid));
+        //}
 
-        public static void DeleteMultipleMessages(Guid[] guidArray, ITextWriter textWriter)
+        public static void DeleteMessages(ITextWriter textWriter, params Guid[] guidArray)
         {
             foreach (var guid in guidArray)
             {

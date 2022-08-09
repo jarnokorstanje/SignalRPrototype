@@ -15,11 +15,11 @@ public class MessageHub : Hub
     
     public void MessageResponse(Guid guid)
     {
-        MissedMessages.DeleteMessage(guid, new ConsoleTextWriter());
+        MissedMessages.DeleteMessages(new ConsoleTextWriter(), guid);
     }
 
     public void MissedMessagesResponse(Guid[] guidArray)
     {
-        MissedMessages.DeleteMultipleMessages(guidArray, new ConsoleTextWriter());
+        MissedMessages.DeleteMessages(new ConsoleTextWriter(), guidArray);
     }
 }

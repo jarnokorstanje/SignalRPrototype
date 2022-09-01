@@ -2,7 +2,7 @@
 {
     public static class MissedMessages
     {
-        public static List<Message> missedMessageList = new(); // private maken: hoe te voorkomen dat de test omvalt???
+        public static List<Message> missedMessageList = new();
         
         public static void SaveMessage(Message messageToSave, ITextWriter textWriter)
         {
@@ -11,14 +11,6 @@
             textWriter.WriteLine();
             textWriter.WriteLine($"Saving message: {messageToSave.guid}, {messageToSave.text}");
         }
-
-        //public static void DeleteMessage(Guid guid, ITextWriter textWriter)
-        //{
-        //    textWriter.WriteLine();
-        //    textWriter.WriteLine($"Deleting message: {guid}");
-
-        //    missedMessageList.Remove(missedMessageList.First(m => m.guid == guid));
-        //}
 
         public static void DeleteMessages(ITextWriter textWriter, params Guid[] guidArray)
         {

@@ -37,9 +37,13 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors();
-app.UseMiddleware<ApiKeyMiddleware>();
 
 app.MapControllers();
 app.MapHub<MessageHub>("/messagehub");
+
+app.UseWhen(
+    httpContext => !httpContext.Request.Path.StartsWithSegments("/messagehub"),
+    subApp => subApp.UseMiddleware<ApiKeyMiddleware>()
+);
 
 app.Run();

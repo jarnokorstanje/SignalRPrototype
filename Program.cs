@@ -37,6 +37,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors();
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.MapControllers();
 app.MapHub<MessageHub>("/messagehub");

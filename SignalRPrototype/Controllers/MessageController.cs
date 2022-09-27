@@ -19,7 +19,7 @@ namespace SignalRPrototype.Controllers
         {
             MissedMessages.SaveMessage(message, new ConsoleTextWriter());
 
-            await _hubContext.Clients.Group(message.receiver).SendAsync("message", message);
+            await _hubContext.Clients.Group(message.Receiver).SendAsync("message", message);
 
             return Ok(message);
         }

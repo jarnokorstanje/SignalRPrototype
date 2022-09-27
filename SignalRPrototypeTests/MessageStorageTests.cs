@@ -18,9 +18,9 @@ namespace SignalRPrototypeTests
 
             MissedMessages.SaveMessage(message, new TestTextWriter());
 
-            Assert.AreEqual(message.text, MissedMessages.missedMessageList[0].text);
-            Assert.AreEqual(message.caller, MissedMessages.missedMessageList[0].caller);
-            Assert.AreEqual(message.receiver, MissedMessages.missedMessageList[0].receiver);
+            Assert.AreEqual(message.Text, MissedMessages.missedMessageList[0].Text);
+            Assert.AreEqual(message.Caller, MissedMessages.missedMessageList[0].Caller);
+            Assert.AreEqual(message.Receiver, MissedMessages.missedMessageList[0].Receiver);
             
         }
 
@@ -33,7 +33,7 @@ namespace SignalRPrototypeTests
             MissedMessages.SaveMessage(message, testTextWriter);
 
             Assert.AreEqual(Environment.NewLine, testTextWriter.textList[0]);
-            Assert.AreEqual($"Saving message: {message.guid}, text", testTextWriter.textList[1]);
+            Assert.AreEqual($"Saving message: {message.Guid}, text", testTextWriter.textList[1]);
         }
     }
 

@@ -15,13 +15,13 @@ namespace SignalRPrototypeTests
 
             Message message = new Message(text, caller, receiver);
 
-            Assert.AreEqual(text, message.text);
-            Assert.AreEqual(caller, message.caller);
-            Assert.AreEqual(receiver, message.receiver);
-            Assert.AreEqual(timestamp.Year, message.timestamp.Year);
-            Assert.AreEqual(timestamp.Month, message.timestamp.Month);
-            Assert.AreEqual(timestamp.Day, message.timestamp.Day);
-            Assert.AreEqual(timestamp.Hour, message.timestamp.Hour);
+            Assert.AreEqual(text, message.Text);
+            Assert.AreEqual(caller, message.Caller);
+            Assert.AreEqual(receiver, message.Receiver);
+            Assert.AreEqual(timestamp.Year, message.Timestamp.Year);
+            Assert.AreEqual(timestamp.Month, message.Timestamp.Month);
+            Assert.AreEqual(timestamp.Day, message.Timestamp.Day);
+            Assert.AreEqual(timestamp.Hour, message.Timestamp.Hour);
         }
     }
 }

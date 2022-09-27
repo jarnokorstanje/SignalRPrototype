@@ -4,9 +4,9 @@ namespace SignalRPrototype;
 
 public class MessageHub : Hub
 {
-    public void AddToGroup(string username)
+    public async void AddToGroup(string username)
     {
-        Groups.AddToGroupAsync(Context.ConnectionId, username);
+        await Groups.AddToGroupAsync(Context.ConnectionId, username);
 
         var missedMessages = MissedMessages.GetMessagesByReceiver(username);
 

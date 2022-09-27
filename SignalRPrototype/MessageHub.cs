@@ -4,13 +4,13 @@ namespace SignalRPrototype;
 
 public class MessageHub : Hub
 {
-    public async void AddToGroup(string username)
+    public async Task<Task> AddToGroup(string username)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, username);
 
         var missedMessages = MissedMessages.GetMessagesByReceiver(username);
 
-        Clients.Group(username).SendAsync("missedMessages", missedMessages);
+        return Clients.Group(username).SendAsync("missedMessages", missedMessages);
     }
     
     public void MessageResponse(Guid guid)
